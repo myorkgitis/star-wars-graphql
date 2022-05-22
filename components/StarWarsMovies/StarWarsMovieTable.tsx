@@ -2,6 +2,7 @@ import {Table} from "antd";
 import {ColumnsType} from "antd/es/table";
 
 export interface StarWarsMovieTableProps {
+    data: any
 }
 
 // https://ant.design/components/table/
