@@ -7,9 +7,15 @@ query FetchMovies {
             title
             characters {
                 count
+                results {
+                    name
+                }
             }
             planets {
                 count
+                results {
+                    name
+                }
             }
         }
     }

@@ -2968,7 +2968,7 @@ export type GetMovieQuery = { __typename?: 'Query', films: { __typename?: 'FilmF
 export type FetchMoviesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FetchMoviesQuery = { __typename?: 'Query', films: { __typename?: 'FilmFindResult', results: Array<{ __typename?: 'Film', id: string, releaseDate?: any | null, title?: string | null, characters: { __typename?: 'CharacterFindResult', count: number }, planets: { __typename?: 'PlanetFindResult', count: number } }> } };
+export type FetchMoviesQuery = { __typename?: 'Query', films: { __typename?: 'FilmFindResult', results: Array<{ __typename?: 'Film', id: string, releaseDate?: any | null, title?: string | null, characters: { __typename?: 'CharacterFindResult', count: number, results: Array<{ __typename?: 'Character', name?: string | null }> }, planets: { __typename?: 'PlanetFindResult', count: number, results: Array<{ __typename?: 'Planet', name?: string | null }> } }> } };
 
 
 export const GetMovieDocument = gql`
@@ -3024,9 +3024,15 @@ export const FetchMoviesDocument = gql`
       title
       characters {
         count
+        results {
+          name
+        }
       }
       planets {
         count
+        results {
+          name
+        }
       }
     }
   }
