@@ -1,0 +1,19 @@
+overwrite: true
+schema:
+  - https://parseapi.back4app.com/graphql:
+      headers:
+        "X-Parse-Application-Id": "${NEXT_PUBLIC_SW_APP_ID}"
+        "X-Parse-Master-Key": "${NEXT_PUBLIC_SW_MASTER_KEY}"
+documents: "components/**/*.graphql"
+generates:
+  generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+  ./schema.graphql:
+    plugins:
+      - "schema-ast"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

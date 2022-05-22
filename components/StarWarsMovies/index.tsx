@@ -2,25 +2,7 @@ import {Button, Form, Input, Pagination} from 'antd';
 import {gql, useLazyQuery, useQuery} from "@apollo/client";
 import StarWarsMovieTable from "./StarWarsMovieTable";
 import {ThreeDots} from "react-loader-spinner";
-
-// TODO add search variable to query to filter on the movie titles
-const FETCH_MOVIES_QUERY = gql`
-    query FetchMovies {
-        films(order: releaseDate_ASC) {
-            results {
-                id
-                releaseDate
-                title
-                characters {
-                    count
-                }
-                planets {
-                    count
-                }
-            }
-        }
-    }
-`
+import {FetchMoviesDocument} from "../../generated/graphql";
 
 const StarWarsMovies = () => {
 
@@ -31,7 +13,7 @@ const StarWarsMovies = () => {
     // https://www.apollographql.com/docs/react/data/queries/#manual-execution-with-uselazyquery
     //
     // If there is data, show the table, otherwise show a loader
-    const [ getMovies, { loading, error, data } ] = useLazyQuery(FETCH_MOVIES_QUERY, {
+    const [ getMovies, { loading, error, data } ] = useLazyQuery(FetchMoviesDocument, {
         variables: {
             search: ""
         }

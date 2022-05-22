@@ -1,0 +1,16 @@
+{
+  "name": "Star Wars API",
+  "schemaPath": "./schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Star Wars API": {
+        "url": "https://parseapi.back4app.com/graphql",
+        "headers": {
+          "X-Parse-Application-Id": "${env:NEXT_PUBLIC_SW_APP_ID}",
+          "X-Parse-Master-Key": "${env:NEXT_PUBLIC_SW_MASTER_KEY}"
+        },
+        "introspect": false
+      }
+    }
+  }
+}

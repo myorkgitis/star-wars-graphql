@@ -1,0 +1,16 @@
+# TODO add search variable to query to filter on the movie titles
+query FetchMovies {
+    films(order: releaseDate_ASC) {
+        results {
+            id
+            releaseDate
+            title
+            characters {
+                count
+            }
+            planets {
+                count
+            }
+        }
+    }
+}

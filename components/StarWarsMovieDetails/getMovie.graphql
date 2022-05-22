@@ -1,0 +1,16 @@
+# TODO build out get movie query and filter by ID
+query GetMovie {
+    films {
+        results {
+            id
+            releaseDate
+            title
+            characters {
+                count
+            }
+            planets {
+                count
+            }
+        }
+    }
+}
