@@ -21,3 +21,8 @@ a {
 .ant-table-cell {
   vertical-align: baseline;
 }
+
+.content-inner {
+  padding: 50px;
+  background-color: white;
+}

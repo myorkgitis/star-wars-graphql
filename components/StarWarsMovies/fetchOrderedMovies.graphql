@@ -1,22 +1,31 @@
 # TODO add search variable to query to filter on the movie titles
-query FetchMovies {
-    films(order: releaseDate_ASC) {
+query SearchMovies($search: String = "", $hasTerm: Boolean!) {
+    search: films(order: releaseDate_ASC, where: { title: { text: { search: { term: $search } } }}) @include(if: $hasTerm) {
         results {
-            id
-            releaseDate
-            title
-            characters {
-                count
-                results {
-                    name
-                }
-            }
-            planets {
-                count
-                results {
-                    name
-                }
-            }
+            ...FilmFields
+        }
+    }
+    all: films(order: releaseDate_ASC) @skip(if: $hasTerm)  {
+        results {
+            ...FilmFields
+        }
+    }
+}
+
+fragment FilmFields on Film {
+    id
+    releaseDate
+    title
+    characters {
+        count
+        results {
+            name
+        }
+    }
+    planets {
+        count
+        results {
+            name
         }
     }
 }

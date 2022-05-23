@@ -1,18 +1,15 @@
 import {Table, Tag} from "antd";
 import {ColumnsType} from "antd/es/table";
 import Title from "antd/lib/typography/Title";
-import {FetchMoviesQuery} from "../../generated/graphql";
+import {SearchMoviesQuery} from "../../generated/graphql";
 import {IterableElement} from "type-fest";
 import Paragraph from "antd/lib/typography/Paragraph";
-import moment from "moment";
 
-type FilmResult = FetchMoviesQuery["films"]["results"]
+type FilmResult = SearchMoviesQuery["all"]["results"]
 
 export interface StarWarsMovieTableProps {
     films: FilmResult
 }
-
-// https://ant.design/components/table/
 
 const StarWarsMovieTable = ({ films }: StarWarsMovieTableProps) => {
     const columns: ColumnsType<IterableElement<FilmResult>> = [
@@ -59,7 +56,7 @@ const StarWarsMovieTable = ({ films }: StarWarsMovieTableProps) => {
 
     return (
         <>
-            <Table style={{verticalAlign: "baseline"}} columns={columns} dataSource={films} />
+            <Table bordered style={{verticalAlign: "baseline"}} columns={columns} dataSource={films} />
         </>
     )
 }

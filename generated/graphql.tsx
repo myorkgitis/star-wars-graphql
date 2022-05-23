@@ -2965,12 +2965,35 @@ export type GetMovieQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetMovieQuery = { __typename?: 'Query', films: { __typename?: 'FilmFindResult', results: Array<{ __typename?: 'Film', id: string, releaseDate?: any | null, title?: string | null, characters: { __typename?: 'CharacterFindResult', count: number }, planets: { __typename?: 'PlanetFindResult', count: number } }> } };
 
-export type FetchMoviesQueryVariables = Exact<{ [key: string]: never; }>;
+export type SearchMoviesQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']>;
+  hasTerm: Scalars['Boolean'];
+}>;
 
 
-export type FetchMoviesQuery = { __typename?: 'Query', films: { __typename?: 'FilmFindResult', results: Array<{ __typename?: 'Film', id: string, releaseDate?: any | null, title?: string | null, characters: { __typename?: 'CharacterFindResult', count: number, results: Array<{ __typename?: 'Character', name?: string | null }> }, planets: { __typename?: 'PlanetFindResult', count: number, results: Array<{ __typename?: 'Planet', name?: string | null }> } }> } };
+export type SearchMoviesQuery = { __typename?: 'Query', search: { __typename?: 'FilmFindResult', results: Array<{ __typename?: 'Film', id: string, releaseDate?: any | null, title?: string | null, characters: { __typename?: 'CharacterFindResult', count: number, results: Array<{ __typename?: 'Character', name?: string | null }> }, planets: { __typename?: 'PlanetFindResult', count: number, results: Array<{ __typename?: 'Planet', name?: string | null }> } }> }, all: { __typename?: 'FilmFindResult', results: Array<{ __typename?: 'Film', id: string, releaseDate?: any | null, title?: string | null, characters: { __typename?: 'CharacterFindResult', count: number, results: Array<{ __typename?: 'Character', name?: string | null }> }, planets: { __typename?: 'PlanetFindResult', count: number, results: Array<{ __typename?: 'Planet', name?: string | null }> } }> } };
 
+export type FilmFieldsFragment = { __typename?: 'Film', id: string, releaseDate?: any | null, title?: string | null, characters: { __typename?: 'CharacterFindResult', count: number, results: Array<{ __typename?: 'Character', name?: string | null }> }, planets: { __typename?: 'PlanetFindResult', count: number, results: Array<{ __typename?: 'Planet', name?: string | null }> } };
 
+export const FilmFieldsFragmentDoc = gql`
+    fragment FilmFields on Film {
+  id
+  releaseDate
+  title
+  characters {
+    count
+    results {
+      name
+    }
+  }
+  planets {
+    count
+    results {
+      name
+    }
+  }
+}
+    `;
 export const GetMovieDocument = gql`
     query GetMovie {
   films {
@@ -3015,53 +3038,49 @@ export function useGetMovieLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetMovieQueryHookResult = ReturnType<typeof useGetMovieQuery>;
 export type GetMovieLazyQueryHookResult = ReturnType<typeof useGetMovieLazyQuery>;
 export type GetMovieQueryResult = Apollo.QueryResult<GetMovieQuery, GetMovieQueryVariables>;
-export const FetchMoviesDocument = gql`
-    query FetchMovies {
-  films(order: releaseDate_ASC) {
+export const SearchMoviesDocument = gql`
+    query SearchMovies($search: String = "", $hasTerm: Boolean!) {
+  search: films(
+    order: releaseDate_ASC
+    where: {title: {text: {search: {term: $search}}}}
+  ) @include(if: $hasTerm) {
     results {
-      id
-      releaseDate
-      title
-      characters {
-        count
-        results {
-          name
-        }
-      }
-      planets {
-        count
-        results {
-          name
-        }
-      }
+      ...FilmFields
+    }
+  }
+  all: films(order: releaseDate_ASC) @skip(if: $hasTerm) {
+    results {
+      ...FilmFields
     }
   }
 }
-    `;
+    ${FilmFieldsFragmentDoc}`;
 
 /**
- * __useFetchMoviesQuery__
+ * __useSearchMoviesQuery__
  *
- * To run a query within a React component, call `useFetchMoviesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchMoviesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useSearchMoviesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchMoviesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFetchMoviesQuery({
+ * const { data, loading, error } = useSearchMoviesQuery({
  *   variables: {
+ *      search: // value for 'search'
+ *      hasTerm: // value for 'hasTerm'
  *   },
  * });
  */
-export function useFetchMoviesQuery(baseOptions?: Apollo.QueryHookOptions<FetchMoviesQuery, FetchMoviesQueryVariables>) {
+export function useSearchMoviesQuery(baseOptions: Apollo.QueryHookOptions<SearchMoviesQuery, SearchMoviesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FetchMoviesQuery, FetchMoviesQueryVariables>(FetchMoviesDocument, options);
+        return Apollo.useQuery<SearchMoviesQuery, SearchMoviesQueryVariables>(SearchMoviesDocument, options);
       }
-export function useFetchMoviesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FetchMoviesQuery, FetchMoviesQueryVariables>) {
+export function useSearchMoviesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchMoviesQuery, SearchMoviesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FetchMoviesQuery, FetchMoviesQueryVariables>(FetchMoviesDocument, options);
+          return Apollo.useLazyQuery<SearchMoviesQuery, SearchMoviesQueryVariables>(SearchMoviesDocument, options);
         }
-export type FetchMoviesQueryHookResult = ReturnType<typeof useFetchMoviesQuery>;
-export type FetchMoviesLazyQueryHookResult = ReturnType<typeof useFetchMoviesLazyQuery>;
-export type FetchMoviesQueryResult = Apollo.QueryResult<FetchMoviesQuery, FetchMoviesQueryVariables>;
+export type SearchMoviesQueryHookResult = ReturnType<typeof useSearchMoviesQuery>;
+export type SearchMoviesLazyQueryHookResult = ReturnType<typeof useSearchMoviesLazyQuery>;
+export type SearchMoviesQueryResult = Apollo.QueryResult<SearchMoviesQuery, SearchMoviesQueryVariables>;

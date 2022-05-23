@@ -6,6 +6,12 @@ import {
     InMemoryCache,
     ApolloProvider
 } from "@apollo/client";
+import {Layout} from "antd";
+import StarWarsMovies from "../components/StarWarsMovies";
+import {Content, Footer, Header} from "antd/lib/layout/layout";
+import Title from "antd/lib/typography/Title";
+import Paragraph from "antd/lib/typography/Paragraph";
+import Link from "next/link";
 
 const client = new ApolloClient({
     uri: 'https://parseapi.back4app.com/graphql',
@@ -30,7 +36,18 @@ function MyApp({Component, pageProps}: AppProps) {
     return (
         <>
             <ApolloProvider client={client}>
-                <Component {...pageProps} />
+                <Layout>
+                    <Header>
+                        <Title style={{color: "white"}}>Star Wars Movies 🚀💥🍿</Title>
+                    </Header>
+                    <Content style={{padding: '50px'}}>
+                        <Component {...pageProps} />
+                    </Content>
+                    <Footer style={{textAlign: 'center'}}>
+                        <Paragraph>Built by Matt Yorkgitis</Paragraph>
+                        <Paragraph>Uses the <Link href={"https://www.back4app.com/database/davimacedo/swapi-star-wars-api"}>StarWars GraphQL API</Link></Paragraph>
+                    </Footer>
+                </Layout>
             </ApolloProvider>
         </>
     )
