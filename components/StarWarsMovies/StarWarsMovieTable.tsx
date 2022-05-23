@@ -1,9 +1,10 @@
-import {Table, Tag} from "antd";
+import {Button, Table, Tag} from "antd";
 import {ColumnsType} from "antd/es/table";
 import Title from "antd/lib/typography/Title";
 import {SearchMoviesQuery} from "../../generated/graphql";
 import {IterableElement} from "type-fest";
 import Paragraph from "antd/lib/typography/Paragraph";
+import Link from "next/link";
 
 type FilmResult = SearchMoviesQuery["all"]["results"]
 
@@ -19,7 +20,14 @@ const StarWarsMovieTable = ({ films }: StarWarsMovieTableProps) => {
             key: 'title',
             render: (value, record, index) => {
                 return (
-                    <Title level={4}>{value}</Title>
+                    <>
+                        <Title level={4}>{value}</Title>
+                        <br/>
+                        <Link href={`/movies/${record.id}`} passHref>
+                            <Button type={"primary"} href={`/movies/${record.id}`}>View Details</Button>
+                        </Link>
+                    </>
+
                 )
             },
             width: "20%",

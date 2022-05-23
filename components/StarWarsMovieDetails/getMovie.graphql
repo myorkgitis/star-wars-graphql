@@ -1,15 +1,32 @@
-# TODO build out get movie query and filter by ID
-query GetMovie {
-    films {
+query GetMovie($id: String!) {
+    films (where: { id: { equalTo: $id } }) {
         results {
             id
             releaseDate
             title
+            director
+            openingCrawl
+            producer
             characters {
                 count
+                results {
+                    name
+                    birthYear
+                    eyeColor
+                    hairColor
+                    gender
+                    height
+                }
             }
             planets {
                 count
+                results {
+                    name
+                    diameter
+                    gravity
+                    orbitalPeriod
+                    population
+                }
             }
         }
     }

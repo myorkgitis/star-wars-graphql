@@ -2960,10 +2960,12 @@ export type WithinInput = {
   box: BoxInput;
 };
 
-export type GetMovieQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetMovieQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
 
 
-export type GetMovieQuery = { __typename?: 'Query', films: { __typename?: 'FilmFindResult', results: Array<{ __typename?: 'Film', id: string, releaseDate?: any | null, title?: string | null, characters: { __typename?: 'CharacterFindResult', count: number }, planets: { __typename?: 'PlanetFindResult', count: number } }> } };
+export type GetMovieQuery = { __typename?: 'Query', films: { __typename?: 'FilmFindResult', results: Array<{ __typename?: 'Film', id: string, releaseDate?: any | null, title?: string | null, director?: string | null, openingCrawl?: string | null, producer?: string | null, characters: { __typename?: 'CharacterFindResult', count: number, results: Array<{ __typename?: 'Character', name?: string | null, birthYear?: string | null, eyeColor?: string | null, hairColor?: string | null, gender?: string | null, height?: number | null }> }, planets: { __typename?: 'PlanetFindResult', count: number, results: Array<{ __typename?: 'Planet', name?: string | null, diameter?: number | null, gravity?: string | null, orbitalPeriod?: number | null, population?: number | null }> } }> } };
 
 export type SearchMoviesQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;
@@ -2995,17 +2997,35 @@ export const FilmFieldsFragmentDoc = gql`
 }
     `;
 export const GetMovieDocument = gql`
-    query GetMovie {
-  films {
+    query GetMovie($id: String!) {
+  films(where: {id: {equalTo: $id}}) {
     results {
       id
       releaseDate
       title
+      director
+      openingCrawl
+      producer
       characters {
         count
+        results {
+          name
+          birthYear
+          eyeColor
+          hairColor
+          gender
+          height
+        }
       }
       planets {
         count
+        results {
+          name
+          diameter
+          gravity
+          orbitalPeriod
+          population
+        }
       }
     }
   }
@@ -3024,10 +3044,11 @@ export const GetMovieDocument = gql`
  * @example
  * const { data, loading, error } = useGetMovieQuery({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetMovieQuery(baseOptions?: Apollo.QueryHookOptions<GetMovieQuery, GetMovieQueryVariables>) {
+export function useGetMovieQuery(baseOptions: Apollo.QueryHookOptions<GetMovieQuery, GetMovieQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetMovieQuery, GetMovieQueryVariables>(GetMovieDocument, options);
       }

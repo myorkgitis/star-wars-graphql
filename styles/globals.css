@@ -26,3 +26,7 @@ a {
   padding: 50px;
   background-color: white;
 }
+
+.header-title, .header-title:hover {
+  color: white !important;
+}

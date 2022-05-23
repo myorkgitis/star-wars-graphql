@@ -1,4 +1,3 @@
-# TODO add search variable to query to filter on the movie titles
 query SearchMovies($search: String = "", $hasTerm: Boolean!) {
     search: films(order: releaseDate_ASC, where: { title: { text: { search: { term: $search } } }}) @include(if: $hasTerm) {
         results {

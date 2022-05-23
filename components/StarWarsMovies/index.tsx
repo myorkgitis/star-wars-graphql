@@ -7,6 +7,7 @@ import {
 import moment from "moment";
 import Title from "antd/lib/typography/Title";
 import {useMemo} from "react";
+import {SearchOutlined} from "@ant-design/icons";
 
 const StarWarsMovies = () => {
     // Make call to SW API here
@@ -45,13 +46,16 @@ const StarWarsMovies = () => {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button htmlType={"submit"} type={"primary"}>Search Movies</Button>
+                        <Button htmlType={"submit"} type={"primary"}><SearchOutlined /> Search Movies</Button>
                     </Form.Item>
                     <Form.Item>
                         <ThreeDots color="#00BFFF" height={40} width={40} visible={loading} />
                     </Form.Item>
                 </Form>
             </Space>
+
+            {error && <Alert type={"error"} message={error.message} />}
+
             {!loading &&
                 <div style={{paddingTop: "50px"}}>
                     {films.length ?

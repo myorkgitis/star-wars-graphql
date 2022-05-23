@@ -7,7 +7,6 @@ import {
     ApolloProvider
 } from "@apollo/client";
 import {Layout} from "antd";
-import StarWarsMovies from "../components/StarWarsMovies";
 import {Content, Footer, Header} from "antd/lib/layout/layout";
 import Title from "antd/lib/typography/Title";
 import Paragraph from "antd/lib/typography/Paragraph";
@@ -38,7 +37,7 @@ function MyApp({Component, pageProps}: AppProps) {
             <ApolloProvider client={client}>
                 <Layout>
                     <Header>
-                        <Title style={{color: "white"}}>Star Wars Movies 🚀💥🍿</Title>
+                        <Title style={{color: "white"}}><Link href={"/"} passHref><a href={"/"} className={"header-title"}>Star Wars Movies 🚀💥🍿</a></Link></Title>
                     </Header>
                     <Content style={{padding: '50px'}}>
                         <Component {...pageProps} />
