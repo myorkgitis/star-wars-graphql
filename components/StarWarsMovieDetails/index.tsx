@@ -1,50 +1,11 @@
 import {useGetMovieQuery} from "../../generated/graphql";
 import {ThreeDots} from "react-loader-spinner";
-import {Alert, Tag} from "antd";
+import {Alert, Col, Descriptions, Row, Tag} from "antd";
 import Title from "antd/lib/typography/Title";
 import Link from "next/link";
 import Paragraph from "antd/lib/typography/Paragraph";
 import moment from "moment";
 import {atomOneDark, CopyBlock} from "react-code-blocks";
-
-const code = `
-    # getMovie.graphql
-    
-    query GetMovie($id: String!) {
-        films (where: { id: { equalTo: $id } }) {
-            results {
-                id
-                releaseDate
-                title
-                director
-                openingCrawl
-                producer
-                characters {
-                    count
-                    results {
-                        name
-                        birthYear
-                        eyeColor
-                        hairColor
-                        gender
-                        height
-                    }
-                }
-                planets {
-                    count
-                    results {
-                        name
-                        diameter
-                        gravity
-                        orbitalPeriod
-                        population
-                    }
-                }
-            }
-        }
-    }
-    
-`
 
 export interface StarWarsMovieDetailsProps {
     id: string
@@ -71,27 +32,22 @@ const StarWarsMovieDetails = ({ id }: StarWarsMovieDetailsProps) => {
     return (
         <div>
             <Title>{film.title}</Title>
-            <Paragraph type={"secondary"} style={{fontSize: "1.2em"}}>Released on {moment(film.releaseDate).format("l")}</Paragraph>
 
-            <Title level={4}>{film.characters.count} Characters In Movie</Title>
-            <Paragraph>
-                {film.characters.results.map(character => <Tag style={{margin: "4px"}} color="geekblue" key={character.name}>{character.name}</Tag>)}
-            </Paragraph>
-
-            <Title level={4}>{film.planets.count} Planets Visited</Title>
-            <Paragraph>
-                {film.planets.results.map(planet => <Tag style={{margin: "4px"}} color="green" key={planet.name}>{planet.name}</Tag>)}
-            </Paragraph>
-
-            <Paragraph strong>TODO List out more information about the movie including planets, director, and producer information. See the query in `getMovie.graphql`.</Paragraph>
-
-            <CopyBlock
-                text={code}
-                language={"graphql"}
-                showLineNumbers={false}
-                theme={atomOneDark}
-                wrapLines
-            />
+            <Descriptions bordered>
+                <Descriptions.Item label="Release Date">{moment(film.releaseDate).format("l")}</Descriptions.Item>
+                <Descriptions.Item label="Director(s)">{film.director}</Descriptions.Item>
+                <Descriptions.Item label="Producer(s)">{film.producer}</Descriptions.Item>
+                <Descriptions.Item label={`Characters (${film.characters.count})`} span={3}>
+                    <Paragraph>
+                        {film.characters.results.map(character => <Tag style={{margin: "4px"}} color="geekblue" key={character.name}>{character.name}</Tag>)}
+                    </Paragraph>
+                </Descriptions.Item>
+                <Descriptions.Item label={`Planets (${film.planets.count})`} span={3}>
+                    <Paragraph>
+                        {film.planets.results.map(planet => <Tag style={{margin: "4px"}} color="green" key={planet.name}>{planet.name}</Tag>)}
+                    </Paragraph>
+                </Descriptions.Item>
+            </Descriptions>
         </div>
     )
 }
